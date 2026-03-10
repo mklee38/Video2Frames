@@ -12,8 +12,8 @@ Usage
 
 You can run the script two ways:
 
-- Pass the target root folder which contains (or will contain) a `video` subfolder. The script looks for videos in `<target>/video` and writes outputs to `<target>/<video_name>`.
-- Or pass the `video` folder directly; outputs will be written to the `video` folder's parent.
+- Pass the target root folder which contains (or will contain) a `video` subfolder. The script looks for videos in `<target>/video` and writes outputs inside the `video` folder (e.g., `<target>/video/<video_name>`).
+- Or pass the `video` folder directly; outputs will be written inside the `video` folder (e.g., `/path/to/target-folder/video/<video_name>`).
 
 Run interactively and follow the prompt:
 

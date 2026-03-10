@@ -77,10 +77,11 @@ def main():
     # 2) user passes the 'video' folder directly -> videos are in <folder> and outputs go to <folder>.parent
     if folder.name == 'video':
         videos_dir = folder
-        output_root = folder.parent
     else:
         videos_dir = folder / 'video'
-        output_root = folder
+
+    # Place outputs inside the same folder that contains the videos (the input folder)
+    output_root = videos_dir
 
     # ensure the videos folder exists
     videos_dir.mkdir(parents=True, exist_ok=True)

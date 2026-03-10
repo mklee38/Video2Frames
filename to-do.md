@@ -26,7 +26,7 @@ This workspace now includes a small CLI app that implements the above requiremen
 - **Quick run:** Install `ffmpeg` on your system, then run `python3 app.py /path/to/folder` or run `python3 app.py` and follow the prompt.
 
 - **Videos location:** Put your video files inside a `video` subfolder of the target folder (the script creates this folder if missing). Screenshots for each video are written to a folder in the target root (e.g., `/path/to/folder/<video-name>`).
- - **Videos location:** Put your video files inside a `video` subfolder of the target folder (the script creates this folder if missing). You can also pass the `video` folder directly to the script. Screenshots for each video are written to a folder in the target root (e.g., `/path/to/folder/<video-name>`).
+ - **Videos location:** Put your video files inside a `video` subfolder of the target folder (the script creates this folder if missing). You can also pass the `video` folder directly to the script. Screenshots for each video are written inside the `video` folder in a folder named after the video (e.g., `/path/to/folder/video/<video-name>`).
 
 See `README.md` for full usage details and examples.
 

@@ -10,8 +10,21 @@ Usage
 
 - Run interactively and follow the prompt:
 
+You can run the script two ways:
+
+- Pass the target root folder which contains (or will contain) a `video` subfolder. The script looks for videos in `<target>/video` and writes outputs to `<target>/<video_name>`.
+- Or pass the `video` folder directly; outputs will be written to the `video` folder's parent.
+
+Run interactively and follow the prompt:
+
 ```bash
-python3 app.py /path/to/folder
+python3 app.py /path/to/target-folder
+```
+
+Or pass the `video` folder directly:
+
+```bash
+python3 app.py /path/to/target-folder/video -n 4
 ```
 
 - Or pass number of screenshots per video directly:
@@ -25,6 +38,8 @@ Behavior
 - The script scans the provided folder for video files (mp4, mov, avi, mkv, webm, flv, wmv).
 - For each video it creates a folder next to the video using the video's filename (without extension) and saves screenshots named `<video>_shot_XXX.jpg`.
 - Screenshots are taken at evenly spaced timestamps across the video duration.
+
+- The script expects videos to be inside `<target>/video`. For each video it creates an output folder in `<target>/<video_name>/` (not inside the `video` folder).
 
 Example
 

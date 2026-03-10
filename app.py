@@ -27,17 +27,21 @@ def get_duration(path: Path) -> float:
 def extract_frame(input_path: Path, ts: float, out_path: Path):
     # use -ss before -i for fast seeking
     cmd = ['ffmpeg', '-y', '-ss', f'{ts:.3f}', '-i', str(input_path), '-frames:v', '1', '-q:v', '2', str(out_path)]
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f'ffmpeg failed for {input_path.name} at {ts:.2f}s: {e.stderr.strip()}')
+        raise
 
 
-def process_video(path: Path, count: int):
+def process_video(path: Path, count: int, output_root: Path):
     dur = get_duration(path)
     if count <= 0:
         return
     timestamps = [dur * (i + 1) / (count + 1) for i in range(count)]
     out_dir = path.with_suffix('').name
-    out_dir_path = path.parent / out_dir
-    out_dir_path.mkdir(exist_ok=True)
+    out_dir_path = output_root / out_dir
+    out_dir_path.mkdir(parents=True, exist_ok=True)
     for idx, ts in enumerate(timestamps, start=1):
         out_file = out_dir_path / f"{path.stem}_shot_{idx:03d}.jpg"
         print(f'Extracting {out_file.name} at {ts:.2f}s')
@@ -68,11 +72,26 @@ def main():
     else:
         num = args.num
 
-    for f in sorted(folder.iterdir()):
+    # Support two modes:
+    # 1) user passes the target root (contains a 'video' subfolder) -> videos are in <folder>/video and outputs go to <folder>
+    # 2) user passes the 'video' folder directly -> videos are in <folder> and outputs go to <folder>.parent
+    if folder.name == 'video':
+        videos_dir = folder
+        output_root = folder.parent
+    else:
+        videos_dir = folder / 'video'
+        output_root = folder
+
+    # ensure the videos folder exists
+    videos_dir.mkdir(parents=True, exist_ok=True)
+
+    print(f'Looking for videos in: {videos_dir}')
+
+    for f in sorted(videos_dir.iterdir()):
         if f.is_file() and f.suffix.lower() in VIDEO_EXTS:
             print('Processing', f.name)
             try:
-                process_video(f, num)
+                process_video(f, num, output_root)
             except Exception as e:
                 print('Error processing', f.name, '-', e)
 
